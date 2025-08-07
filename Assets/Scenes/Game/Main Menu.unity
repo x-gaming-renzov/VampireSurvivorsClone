@@ -747,6 +747,54 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterSelector: {fileID: 814364901}
+--- !u!1 &517237933
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 517237936}
+  - component: {fileID: 517237937}
+  m_Layer: 0
+  m_Name: NovaManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &517237936
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 517237933}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &517237937
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 517237933}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1baba7ab9165c46949f1dc9955fa26e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  vampireSurvivalExperience: {fileID: 11400000, guid: 45f2769d4b0bf4866bb568ca974540e8, type: 2}
+  gameBalanceConfigPrefab: {fileID: 918806642367682393, guid: a7d65e124d3ef4e15b90e93e64a14173, type: 3}
+  playerProgressionConfigPrefab: {fileID: 7920183873899445502, guid: 97980748cd24840d88810fca2fed5e53, type: 3}
+  combatConfigPrefab: {fileID: 2135639035804730048, guid: d27ce598828b4418390fc8cd2ba72681, type: 3}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0

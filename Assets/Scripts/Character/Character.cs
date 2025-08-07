@@ -86,8 +86,8 @@ namespace Vampire
             coroutineQueue = new CoroutineQueue(this);
             coroutineQueue.StartLoop();
             // Initialize starting health and exp
-            currentHealth = characterBlueprint.hp;
-            healthBar.Setup(currentHealth, 0, characterBlueprint.hp);
+            currentHealth = characterBlueprint.hp * NovaConfig.PlayerProgression.HealthMultiplier;
+            healthBar.Setup(currentHealth, 0, characterBlueprint.hp * NovaConfig.PlayerProgression.HealthMultiplier);
             expBar.Setup(currentExp, 0, nextLevelExp);
             currentLevel = 1;
             UpdateLevelDisplay();
@@ -95,7 +95,7 @@ namespace Vampire
             spriteAnimator.Init(characterBlueprint.walkSpriteSequence, characterBlueprint.walkFrameTime, false);
             // Limit max speed using drag
             movementSpeed = new UpgradeableMovementSpeed();
-            movementSpeed.Value = characterBlueprint.movespeed;
+            movementSpeed.Value = NovaConfig.PlayerProgression.MovementSpeed;
             abilityManager.RegisterUpgradeableValue(movementSpeed, true);
             UpdateMoveSpeed();
             // Initialize upgradeable armor

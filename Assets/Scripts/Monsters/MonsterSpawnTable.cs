@@ -11,14 +11,25 @@ namespace Vampire
 
         public float GetSpawnRate(float t)
         {
+            float baseSpawnRate;
             if (t == 0)
-                return spawnRateKeyframes[0].spawnRate;
-            for (int i = 1; i < spawnRateKeyframes.Length; i++)
+                baseSpawnRate = spawnRateKeyframes[0].spawnRate;
+            else
             {
-                if (spawnRateKeyframes[i].t >= t)
-                    return Mathf.Lerp(spawnRateKeyframes[i-1].spawnRate, spawnRateKeyframes[i].spawnRate, Remap01(spawnRateKeyframes[i-1].t, spawnRateKeyframes[i].t, t));
+                for (int i = 1; i < spawnRateKeyframes.Length; i++)
+                {
+                    if (spawnRateKeyframes[i].t >= t)
+                    {
+                        baseSpawnRate = Mathf.Lerp(spawnRateKeyframes[i-1].spawnRate, spawnRateKeyframes[i].spawnRate, Remap01(spawnRateKeyframes[i-1].t, spawnRateKeyframes[i].t, t));
+                        // Apply Nova multiplier
+                        return baseSpawnRate * NovaConfig.GameBalance.SpawnRateMultiplier;
+                    }
+                }
+                baseSpawnRate = 0;
             }
-            return 0;
+            
+            // Apply Nova multiplier
+            return baseSpawnRate * NovaConfig.GameBalance.SpawnRateMultiplier;
         }
 
         public (int, float) SelectMonsterWithHPMultiplier (float t)

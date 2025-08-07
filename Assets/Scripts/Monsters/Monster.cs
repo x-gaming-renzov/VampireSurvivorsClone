@@ -60,8 +60,8 @@ namespace Vampire
             this.monsterBlueprint = monsterBlueprint;
             rb.position = position;
             transform.position = position;
-            // Reset health to max
-            currentHealth = monsterBlueprint.hp + hpBuff;
+            // Reset health to max with Nova multiplier
+            currentHealth = (monsterBlueprint.hp + hpBuff) * NovaConfig.GameBalance.HealthMultiplier;
             // Toggle alive flag on
             alive = true;
             // Add to list of living monsters

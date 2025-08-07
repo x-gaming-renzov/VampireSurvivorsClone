@@ -95,6 +95,7 @@ GameObject:
   - component: {fileID: 5728012152352380386}
   - component: {fileID: 4806487832682146401}
   - component: {fileID: 7073673841541597642}
+  - component: {fileID: 1575669240462989884}
   m_Layer: 0
   m_Name: Health
   m_TagString: Untagged
@@ -136,13 +137,7 @@ MonoBehaviour:
   saOffsetMax: 0.3
   juiciness: 3
   lerpTime: 0.6
-  storeInInventory: 1
   magnetic: 0
-  collectedAudio:
-    clip: {fileID: 0}
-    volume: 0
-    pitchMin: 0
-    pitchMax: 0
   healAmount: 50
 --- !u!58 &7073673841541597642
 CircleCollider2D:
@@ -160,3 +155,17 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.2
+--- !u!114 &1575669240462989884
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5021278261004164486}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23456789012345678901234abcdef012, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObjectName: player
+  Properties: []

@@ -705,6 +705,7 @@ GameObject:
   - component: {fileID: 5629613628450112860}
   - component: {fileID: 5629613628450112859}
   - component: {fileID: 5159369455042783690}
+  - component: {fileID: -6890515219975150865}
   m_Layer: 5
   m_Name: Ability Card
   m_TagString: Untagged
@@ -816,6 +817,24 @@ MonoBehaviour:
   references:
     version: 2
     RefIds: []
+--- !u!114 &-6890515219975150865
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5629613628450112857}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23456789012345678901234abcdef012, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObjectName: r
+  Properties:
+  - PropertyName: NewProperty1
+    Type: 2
+    DefaultValue: t
+    Description: 
 --- !u!1 &5629613628922674389
 GameObject:
   m_ObjectHideFlags: 0

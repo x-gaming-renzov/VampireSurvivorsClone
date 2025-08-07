@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 1baba7ab9165c46949f1dc9955fa26e2
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - vampireSurvivalExperience: {instanceID: 0}
+  - gameBalanceConfigPrefab: {fileID: 918806642367682393, guid: a7d65e124d3ef4e15b90e93e64a14173, type: 3}
+  - playerProgressionConfigPrefab: {fileID: 7920183873899445502, guid: 97980748cd24840d88810fca2fed5e53, type: 3}
+  - combatConfigPrefab: {fileID: 2135639035804730048, guid: d27ce598828b4418390fc8cd2ba72681, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
