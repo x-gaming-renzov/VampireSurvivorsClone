@@ -1,12 +1,5 @@
 {
   "dependencies": {
-    "com.nova.unity-sdk": {
-      "version": "https://github.com/x-gaming-renzov/nova-unity-sdk.git",
-      "depth": 0,
-      "source": "git",
-      "dependencies": {},
-      "hash": "676ca56aaab767873ca0066a65cadfdf918ce696"
-    },
     "com.unity.2d.animation": {
       "version": "7.0.9",
       "depth": 1,

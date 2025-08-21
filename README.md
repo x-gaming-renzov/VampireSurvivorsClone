@@ -37,3 +37,11 @@ A Vampire Survivors inspired mobile game built from scratch in Unity.
 - [Noto Sans CJK TC](https://fonts.google.com/noto/specimen/Noto+Sans+TC/about)
 
 
+VampireSurvivalExperience
+
+player_progression_config
+
+starting_health_multiplier : 1
+starting_movement_speed : 1
+exp_to_level_multiplier : 5
+ability_drop_rarity_weights : 1
