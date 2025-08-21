@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: VampireSurvivalExperience
   m_EditorClassIdentifier: 
   ExperienceName: VampireSurvivalExperience
-  Description: 
+  Description: VampireSurvivalExperience
   GameObjects: []

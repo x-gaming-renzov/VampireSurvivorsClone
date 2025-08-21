@@ -22,12 +22,36 @@ namespace Vampire
         
         void Start()
         {
+            // Check if all required components are assigned
+            if (!AreNovaComponentsValid())
+            {
+                Debug.LogError("❌ Required Nova components are not properly assigned in the inspector");
+                LoadDefaultConfiguration();
+                return;
+            }
+            
             InstantiateNovaContexts();
+            
+            // Check if contexts were instantiated successfully
+            if (gameBalanceInstance == null || playerProgressionInstance == null || combatInstance == null)
+            {
+                Debug.LogError("❌ Nova contexts not properly instantiated, cannot initialize Nova");
+                LoadDefaultConfiguration();
+                return;
+            }
+            
             InitializeNova();
         }
         
         private void InstantiateNovaContexts()
         {
+            // Check if prefabs are assigned
+            if (!AreNovaComponentsValid())
+            {
+                Debug.LogError("❌ Cannot instantiate Nova contexts: required components are not assigned");
+                return;
+            }
+            
             // Create parent object for organization
             GameObject novaParent = new GameObject("Nova Contexts");
             
@@ -36,13 +60,28 @@ namespace Vampire
             playerProgressionInstance = Instantiate(playerProgressionConfigPrefab, novaParent.transform);
             combatInstance = Instantiate(combatConfigPrefab, novaParent.transform);
             
-            Debug.Log("Nova context prefabs instantiated");
+            // Verify instances were created
+            if (gameBalanceInstance == null || playerProgressionInstance == null || combatInstance == null)
+            {
+                Debug.LogError("❌ Failed to instantiate one or more Nova context prefabs");
+                return;
+            }
+            
+            Debug.Log("Nova context prefabs instantiated successfully");
         }
         
         async void InitializeNova()
         {
             try
             {
+                // Check if all required components are assigned
+                if (!AreNovaComponentsValid())
+                {
+                    Debug.LogError("❌ Required Nova components are not properly assigned in the inspector");
+                    LoadDefaultConfiguration();
+                    return;
+                }
+                
                 // Initialize Nova SDK
                 NovaSDK.Instance.Initialize();
                 Debug.Log("Nova SDK initialized");
@@ -100,30 +139,124 @@ namespace Vampire
             return userId;
         }
         
+        /// <summary>
+        /// Safely checks if a Unity Object is null or has been destroyed
+        /// </summary>
+        /// <param name="obj">The Unity Object to check</param>
+        /// <returns>True if the object is valid, false if null or destroyed</returns>
+        private bool IsValidUnityObject(Object obj)
+        {
+            return obj != null && !Object.ReferenceEquals(obj, null);
+        }
+        
+        /// <summary>
+        /// Checks if all required Nova components are properly set up
+        /// </summary>
+        /// <returns>True if all components are valid, false otherwise</returns>
+        private bool AreNovaComponentsValid()
+        {
+            return vampireSurvivalExperience != null &&
+                   gameBalanceConfigPrefab != null &&
+                   playerProgressionConfigPrefab != null &&
+                   combatConfigPrefab != null;
+        }
+        
         private void LoadGameConfiguration()
         {
             try
             {
                 Debug.Log("Loading Nova configuration values...");
                 
-                // Debug: Check if NovaSDK is initialized
+                // Check if NovaSDK is initialized
+                if (NovaSDK.Instance == null)
+                {
+                    Debug.LogError("❌ NovaSDK.Instance is null, cannot load configuration");
+                    return;
+                }
+                
+                if (!NovaSDK.Instance.IsInitialized)
+                {
+                    Debug.LogError("❌ NovaSDK is not initialized, cannot load configuration");
+                    return;
+                }
+                
                 Debug.Log($"🔍 NovaSDK Initialized: {NovaSDK.Instance.IsInitialized}");
                 
+                // Check if experience asset is valid
+                if (vampireSurvivalExperience == null)
+                {
+                    Debug.LogError("❌ vampireSurvivalExperience is null, cannot load configuration");
+                    return;
+                }
+                
+                // Check if instantiated objects are valid and not destroyed
+                if (!IsValidUnityObject(gameBalanceInstance) || !IsValidUnityObject(playerProgressionInstance) || !IsValidUnityObject(combatInstance))
+                {
+                    Debug.LogError("❌ One or more Nova context instances are null or destroyed, cannot load configuration");
+                    return;
+                }
+                
                 // Debug: Check if experience is loaded
-                Debug.Log($"🔍 Experience Asset: {vampireSurvivalExperience?.name}");
+                Debug.Log($"🔍 Experience Asset: {vampireSurvivalExperience.name}");
                 
                 // Debug: Check instantiated NovaContext components
-                Debug.Log($"🔍 GameBalance Instance: {gameBalanceInstance?.name}");
-                Debug.Log($"🔍 PlayerProgression Instance: {playerProgressionInstance?.name}");
-                Debug.Log($"🔍 Combat Instance: {combatInstance?.name}");
+                if (IsValidUnityObject(gameBalanceInstance))
+                {
+                    Debug.Log($"🔍 GameBalance Instance: {gameBalanceInstance.name}");
+                }
+                else
+                {
+                    Debug.LogWarning("🔍 GameBalance Instance is null or destroyed");
+                }
+                
+                if (IsValidUnityObject(playerProgressionInstance))
+                {
+                    Debug.Log($"🔍 PlayerProgression Instance: {playerProgressionInstance.name}");
+                }
+                else
+                {
+                    Debug.LogWarning("🔍 PlayerProgression Instance is null or destroyed");
+                }
+                
+                if (IsValidUnityObject(combatInstance))
+                {
+                    Debug.Log($"🔍 Combat Instance: {combatInstance.name}");
+                }
+                else
+                {
+                    Debug.LogWarning("🔍 Combat Instance is null or destroyed");
+                }
                 
                 var gameBalanceContext = gameBalanceInstance?.GetComponent<Nova.SDK.NovaContext>();
                 var playerProgressionContext = playerProgressionInstance?.GetComponent<Nova.SDK.NovaContext>();
                 var combatContext = combatInstance?.GetComponent<Nova.SDK.NovaContext>();
                 
-                Debug.Log($"🔍 GameBalance Context: {gameBalanceContext?.ObjectName}");
-                Debug.Log($"🔍 PlayerProgression Context: {playerProgressionContext?.ObjectName}");
-                Debug.Log($"🔍 Combat Context: {combatContext?.ObjectName}");
+                if (IsValidUnityObject(gameBalanceContext))
+                {
+                    Debug.Log($"🔍 GameBalance Context: {gameBalanceContext.ObjectName}");
+                }
+                else
+                {
+                    Debug.LogWarning("🔍 GameBalance Context is null or destroyed");
+                }
+                
+                if (IsValidUnityObject(playerProgressionContext))
+                {
+                    Debug.Log($"🔍 PlayerProgression Context: {playerProgressionContext.ObjectName}");
+                }
+                else
+                {
+                    Debug.LogWarning("🔍 PlayerProgression Context is null or destroyed");
+                }
+                
+                if (IsValidUnityObject(combatContext))
+                {
+                    Debug.Log($"🔍 Combat Context: {combatContext.ObjectName}");
+                }
+                else
+                {
+                    Debug.LogWarning("🔍 Combat Context is null or destroyed");
+                }
                 
                 // Try getting values with individual try-catch blocks
                 Debug.Log("Loading game balance configuration...");
@@ -324,5 +457,83 @@ namespace Vampire
             Debug.Log("✅ Default configuration loaded successfully");
             Debug.Log($"📊 Default values - Spawn Rate: {NovaConfig.GameBalance.SpawnRateMultiplier}, Health: {NovaConfig.GameBalance.HealthMultiplier}, Movement: {NovaConfig.PlayerProgression.MovementSpeed}");
         }
+        
+        /// <summary>
+        /// Safely destroys Nova context instances
+        /// </summary>
+        private void CleanupNovaContexts()
+        {
+            if (IsValidUnityObject(gameBalanceInstance))
+            {
+                if (Application.isPlaying)
+                {
+                    Destroy(gameBalanceInstance);
+                }
+                else
+                {
+                    DestroyImmediate(gameBalanceInstance);
+                }
+                gameBalanceInstance = null;
+            }
+            
+            if (IsValidUnityObject(playerProgressionInstance))
+            {
+                if (Application.isPlaying)
+                {
+                    Destroy(playerProgressionInstance);
+                }
+                else
+                {
+                    DestroyImmediate(playerProgressionInstance);
+                }
+                playerProgressionInstance = null;
+            }
+            
+            if (IsValidUnityObject(combatInstance))
+            {
+                if (Application.isPlaying)
+                {
+                    Destroy(combatInstance);
+                }
+                else
+                {
+                    DestroyImmediate(combatInstance);
+                }
+                combatInstance = null;
+            }
+        }
+        
+        void OnDestroy()
+        {
+            CleanupNovaContexts();
+        }
+        
+        void OnApplicationQuit()
+        {
+            CleanupNovaContexts();
+        }
+        
+        /// <summary>
+        /// Editor-only method to validate Nova setup
+        /// </summary>
+        [System.Diagnostics.Conditional("UNITY_EDITOR")]
+        private void ValidateNovaSetup()
+        {
+            if (!AreNovaComponentsValid())
+            {
+                Debug.LogWarning("⚠️ Nova components validation failed. Please check the inspector assignments.");
+            }
+            else
+            {
+                Debug.Log("✅ Nova components validation passed.");
+            }
+        }
+        
+        #if UNITY_EDITOR
+        void OnValidate()
+        {
+            ValidateNovaSetup();
+        }
+        #endif
     }
 } 

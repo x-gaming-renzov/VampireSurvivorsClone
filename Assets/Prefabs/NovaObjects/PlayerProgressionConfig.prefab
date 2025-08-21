@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7137215607825052245}
-  - component: {fileID: -8259171050617596796}
+  - component: {fileID: -638495290327262920}
   m_Layer: 0
   m_Name: PlayerProgressionConfig
   m_TagString: Untagged
@@ -32,7 +32,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-8259171050617596796
+--- !u!114 &-638495290327262920
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -52,7 +52,7 @@ MonoBehaviour:
     Description: 
   - PropertyName: starting_movement_speed
     Type: 0
-    DefaultValue: 5
+    DefaultValue: 1
     Description: 
   - PropertyName: exp_to_level_multiplier
     Type: 0

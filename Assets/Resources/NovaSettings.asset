@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 123456789012345678901234abcdef01, type: 3}
   m_Name: NovaSettings
   m_EditorClassIdentifier: 
-  OrganisationId: org123
-  AppId: app123
-  EnableVerboseLogging: 1
-  ApiBaseUrl: http://localhost:8000
-  CacheExpirationMinutes: 1
-  EventBatchSize: 5
+  OrganisationId: 
+  AppId: 
+  EnableVerboseLogging: 0
+  ApiBaseUrl: 
+  CacheExpirationMinutes: 60
+  EventBatchSize: 10
   EventBatchIntervalSeconds: 30
