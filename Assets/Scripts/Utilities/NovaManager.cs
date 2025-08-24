@@ -15,13 +15,21 @@ namespace Vampire
         public GameObject playerProgressionConfigPrefab;
         public GameObject combatConfigPrefab;
         
-        private bool novaInitialized = false;
+        private static bool novaInitialized = false;
+        private static bool isInitializing = false;
         private GameObject gameBalanceInstance;
         private GameObject playerProgressionInstance;
         private GameObject combatInstance;
         
         void Start()
         {
+            // Prevent multiple initializations
+            if (novaInitialized || isInitializing)
+            {
+                Debug.Log("🔄 Nova already initialized or initializing, skipping...");
+                return;
+            }
+            
             // Check if all required components are assigned
             if (!AreNovaComponentsValid())
             {
@@ -43,8 +51,16 @@ namespace Vampire
             InitializeNova();
         }
         
+        private static bool contextsInstantiated = false;
+        
         private void InstantiateNovaContexts()
         {
+            if (contextsInstantiated)
+            {
+                Debug.Log("🔄 Nova contexts already instantiated, skipping...");
+                return;
+            }
+            
             // Check if prefabs are assigned
             if (!AreNovaComponentsValid())
             {
@@ -67,6 +83,7 @@ namespace Vampire
                 return;
             }
             
+            contextsInstantiated = true;
             Debug.Log("Nova context prefabs instantiated successfully");
         }
         
@@ -74,11 +91,25 @@ namespace Vampire
         {
             try
             {
+                // Set initializing flag
+                isInitializing = true;
+                
                 // Check if all required components are assigned
                 if (!AreNovaComponentsValid())
                 {
                     Debug.LogError("❌ Required Nova components are not properly assigned in the inspector");
                     LoadDefaultConfiguration();
+                    isInitializing = false;
+                    return;
+                }
+                
+                // Check if NovaSDK is already initialized
+                if (NovaSDK.Instance.IsInitialized)
+                {
+                    Debug.Log("🔄 NovaSDK already initialized, skipping initialization");
+                    LoadGameConfiguration();
+                    novaInitialized = true;
+                    isInitializing = false;
                     return;
                 }
                 
@@ -102,6 +133,9 @@ namespace Vampire
                 {
                     Debug.Log("Nova user created successfully: " + userId);
                     
+                    // Initialize event tracking
+                    InitializeEventTracking();
+                    
                     // Fetch experience
                     await NovaSDK.Instance.FetchExperience(vampireSurvivalExperience);
                     Debug.Log("Nova experience fetched successfully");
@@ -117,17 +151,21 @@ namespace Vampire
                     LoadGameConfiguration();
                     
                     novaInitialized = true;
+                    isInitializing = false;
+                    Debug.Log("✅ Nova initialization completed successfully");
                 }
                 else
                 {
                     Debug.LogError("Failed to create Nova user");
                     LoadDefaultConfiguration();
+                    isInitializing = false;
                 }
             }
             catch (System.Exception ex)
             {
                 Debug.LogError($"Nova initialization error: {ex.Message}");
                 LoadDefaultConfiguration();
+                isInitializing = false;
             }
         }
         
@@ -137,6 +175,41 @@ namespace Vampire
             PlayerPrefs.SetString("NovaUserId", userId);
             PlayerPrefs.Save();
             return userId;
+        }
+        
+        private static bool eventTrackingInitialized = false;
+        
+        private void InitializeEventTracking()
+        {
+            if (eventTrackingInitialized)
+            {
+                Debug.Log("🔄 Event tracking already initialized, skipping...");
+                return;
+            }
+            
+            // Ensure EventTracker exists in the scene
+            if (EventTracker.Instance == null)
+            {
+                GameObject eventTrackerObj = new GameObject("EventTracker");
+                eventTrackerObj.AddComponent<EventTracker>();
+                DontDestroyOnLoad(eventTrackerObj);
+                Debug.Log("✅ EventTracker created and added to scene");
+            }
+            else
+            {
+                Debug.Log("✅ EventTracker already exists in scene");
+            }
+            
+            // Track Nova initialization success
+            EventTracker.Instance.TrackEventSafely("nova_initialized", new Dictionary<string, object>
+            {
+                ["user_id"] = NovaSDK.Instance.NovaUserId,
+                ["experience_name"] = vampireSurvivalExperience.ExperienceName,
+                ["timestamp"] = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
+            });
+            
+            eventTrackingInitialized = true;
+            Debug.Log("✅ Event tracking initialized successfully");
         }
         
         /// <summary>
@@ -161,8 +234,16 @@ namespace Vampire
                    combatConfigPrefab != null;
         }
         
+        private static bool configurationLoaded = false;
+        
         private void LoadGameConfiguration()
         {
+            if (configurationLoaded)
+            {
+                Debug.Log("🔄 Nova configuration already loaded, skipping...");
+                return;
+            }
+            
             try
             {
                 Debug.Log("Loading Nova configuration values...");
@@ -423,6 +504,7 @@ namespace Vampire
                 Debug.Log($"🔍 Raw Nova values - Damage: {playerDamage}, Knockback: {knockback}, Armor: {armor}, Healing: {healing}");
                 Debug.Log("Combat configuration loaded successfully");
                 
+                configurationLoaded = true;
                 Debug.Log("✅ Nova configuration loaded successfully");
                 Debug.Log($"📊 Final Values - Spawn Rate: {NovaConfig.GameBalance.SpawnRateMultiplier}, Health: {NovaConfig.GameBalance.HealthMultiplier}, Movement: {NovaConfig.PlayerProgression.MovementSpeed}");
             }
@@ -435,8 +517,16 @@ namespace Vampire
             }
         }
         
+        private static bool defaultConfigurationLoaded = false;
+        
         private void LoadDefaultConfiguration()
         {
+            if (defaultConfigurationLoaded)
+            {
+                Debug.Log("🔄 Default configuration already loaded, skipping...");
+                return;
+            }
+            
             Debug.Log("🔄 Loading default configuration values...");
             
             NovaConfig.GameBalance.SpawnRateMultiplier = 1.0f;
@@ -454,6 +544,7 @@ namespace Vampire
             NovaConfig.Combat.ArmorEffectiveness = 1.0f;
             NovaConfig.Combat.HealingEffectiveness = 1.0f;
             
+            defaultConfigurationLoaded = true;
             Debug.Log("✅ Default configuration loaded successfully");
             Debug.Log($"📊 Default values - Spawn Rate: {NovaConfig.GameBalance.SpawnRateMultiplier}, Health: {NovaConfig.GameBalance.HealthMultiplier}, Movement: {NovaConfig.PlayerProgression.MovementSpeed}");
         }
