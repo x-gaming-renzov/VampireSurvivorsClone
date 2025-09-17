@@ -76,9 +76,9 @@ public class OnboardingUI : MonoBehaviour
 
         // Initialize Nova SDK with user profile data
         Debug.Log($"🚀 Initializing Nova SDK for user: {playerName} from {country}");
-        NovaManager.InitializeNovaAfterOnboarding();
 
         onboardingRoot.SetActive(false);
         mainMenuRoot.SetActive(true);
+        NovaManager.InitializeNovaAfterOnboarding();
     }
 }
